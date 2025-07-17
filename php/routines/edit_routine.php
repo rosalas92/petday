@@ -110,7 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             <div class="form-group">
                                 <label class="form-label">Días de la Semana</label>
-                                <div class="checkbox-group">
+                                <button type="button" id="selectAllDaysBtn" class="btn btn-sm btn-outline" style="margin-left: 10px;">Toda la semana</button>
+                                <div class="checkbox-group" id="daysOfWeekCheckboxes">
                                     <?php 
                                     $dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
                                     foreach ($dias as $dia): 
@@ -138,5 +139,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </section>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllDaysBtn = document.getElementById('selectAllDaysBtn');
+            const daysOfWeekCheckboxes = document.getElementById('daysOfWeekCheckboxes');
+
+            if (selectAllDaysBtn && daysOfWeekCheckboxes) {
+                selectAllDaysBtn.addEventListener('click', function() {
+                    const checkboxes = daysOfWeekCheckboxes.querySelectorAll('input[type="checkbox"]');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = true;
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>
