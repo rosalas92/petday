@@ -1737,6 +1737,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
 }
 
 .calendar-nav h3 {
@@ -1765,7 +1766,7 @@ body {
 .calendar-day {
     background: var(--white);
     padding: var(--spacing-sm);
-    min-height: 120px; /* Altura mínima para los días del calendario */
+    min-height: 140px; /* Aumenta la altura mínima para los días del calendario */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1800,8 +1801,67 @@ body {
     flex-direction: column;
     gap: 5px;
     width: 100%;
-    overflow-y: auto;
-    max-height: 80px; /* Limita la altura de los eventos en el día */
+    overflow-y: auto; /* Permite el scroll si hay muchos eventos */
+    max-height: 100px; /* Limita la altura de los eventos en el día */
+}
+
+.calendar-week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: var(--gray-medium);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.calendar-day-week-view {
+    background: var(--white);
+    padding: var(--spacing-sm);
+    min-height: 150px; /* Altura mínima para los días de la semana */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    transition: background-color 0.2s ease;
+    position: relative;
+    border-right: 1px solid var(--gray-medium);
+    border-bottom: 1px solid var(--gray-medium);
+}
+
+.calendar-day-week-view:last-child {
+    border-right: none;
+}
+
+.calendar-day-week-view.today {
+    background: var(--primary-light);
+    border: 2px solid var(--primary-dark);
+}
+
+.calendar-day-week-view .day-events {
+    overflow-y: auto; /* Permite el scroll si hay muchos eventos en la vista semanal */
+    max-height: 100px; /* Limita la altura de los eventos en la vista semanal */
+}
+
+.calendar-day-single-view {
+    background: var(--white);
+    padding: var(--spacing-lg);
+    min-height: 300px; /* Altura mínima para la vista de un solo día */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.calendar-day-single-view .day-number {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.calendar-day-single-view .day-events {
+    max-height: none; /* Elimina el límite de altura para la vista de un solo día */
+    overflow-y: visible;
 }
 
 .event-item {
@@ -1917,6 +1977,12 @@ body {
 
 .medical-card-section .badge {
     margin-right: var(--spacing-xs);
+}
+
+.events-section .card-body {
+    min-height: 400px; /* Altura mínima para el cuerpo de la tarjeta del calendario */
+    display: flex;
+    flex-direction: column;
 }
 
 /* Measurements Section */

@@ -132,23 +132,305 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                     </div>
 
                     <div class="events-section card">
-                        <div class="card-header">
-                            <h3 class="card-title">Próximos Eventos</h3>
-                            <a href="../events/create_event.php?pet_id=<?php echo $petId; ?>" class="btn btn-sm btn-primary">+ Nuevo Evento</a>
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 class="card-title">Calendario de Eventos y Rutinas</h3>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <select id="calendarViewSelector" class="form-control form-select" style="width: auto;">
+                                    <option value="month">Mes</option>
+                                    <option value="week">Semana</option>
+                                    <option value="day">Día</option>
+                                </select>
+                                <a href="../events/create_event.php?pet_id=<?php echo $petId; ?>" class="btn btn-sm btn-primary">+ Nuevo Evento</a>
+                            </div>
                         </div>
                         <div class="card-body">
-                            <?php if (empty($events)): ?>
-                                <p class="text-muted">No hay eventos próximos.</p>
-                            <?php else: ?>
-                                <ul class="events-list">
-                                    <?php foreach ($events as $event): ?>
-                                        <li>
-                                            <strong><?php echo htmlspecialchars($event['titulo']); ?></strong> - 
-                                            <?php echo formatDateSpanish($event['fecha_evento']); ?> a las <?php echo date('H:i', strtotime($event['fecha_evento'])); ?>
-                                        </li>
+                            <?php
+                            $currentMonth = isset($_GET['month']) ? intval($_GET['month']) : date('n');
+                            $currentYear = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
+                            $currentDay = isset($_GET['day']) ? intval($_GET['day']) : date('j');
+                            $currentView = isset($_GET['view']) ? $_GET['view'] : 'month';
+
+                            $monthNames = [
+                                1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
+                                5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
+                                9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
+                            ];
+
+                            $petRoutines = getPetRoutines($petId);
+                            $petEvents = getUpcomingEvents($petId, 365); // Obtener eventos para el año para filtrar por mes, semana o día
+
+                            // Función auxiliar para generar enlaces de navegación
+                            function generateCalendarNavUrl($petId, $month, $year, $view, $day = null) {
+                                $url = "?id=$petId&month=$month&year=$year&view=$view";
+                                if ($day !== null) {
+                                    $url .= "&day=$day";
+                                }
+                                return $url;
+                            }
+
+                            echo '<div class="calendar-nav">';
+                            if ($currentView === 'month') {
+                                $prevMonth = $currentMonth - 1;
+                                $prevYear = $currentYear;
+                                if ($prevMonth < 1) {
+                                    $prevMonth = 12;
+                                    $prevYear--;
+                                }
+                                $nextMonth = $currentMonth + 1;
+                                $nextYear = $currentYear;
+                                if ($nextMonth > 12) {
+                                    $nextMonth = 1;
+                                    $nextYear++;
+                                }
+                                echo '<a href="' . generateCalendarNavUrl($petId, $prevMonth, $prevYear, $currentView) . '" class="btn btn-sm btn-outline">&lt; Anterior</a>';
+                                echo '<h3>' . $monthNames[$currentMonth] . ' ' . $currentYear . '</h3>';
+                                echo '<a href="' . generateCalendarNavUrl($petId, $nextMonth, $nextYear, $currentView) . '" class="btn btn-sm btn-outline">Siguiente &gt;</a>';
+                            } elseif ($currentView === 'week') {
+                                $date = new DateTime("$currentYear-$currentMonth-$currentDay");
+                                $date->modify('monday this week');
+                                $prevWeek = clone $date;
+                                $prevWeek->modify('-1 week');
+                                $nextWeek = clone $date;
+                                $nextWeek->modify('+1 week');
+
+                                echo '<a href="' . generateCalendarNavUrl($petId, $prevWeek->format('n'), $prevWeek->format('Y'), $currentView, $prevWeek->format('j')) . '" class="btn btn-sm btn-outline">&lt; Semana Anterior</a>';
+                                echo '<h3>Semana del ' . $date->format('d M Y') . '</h3>';
+                                echo '<a href="' . generateCalendarNavUrl($petId, $nextWeek->format('n'), $nextWeek->format('Y'), $currentView, $nextWeek->format('j')) . '" class="btn btn-sm btn-outline">Semana Siguiente &gt;</a>';
+                            } elseif ($currentView === 'day') {
+                                $date = new DateTime("$currentYear-$currentMonth-$currentDay");
+                                $prevDay = clone $date;
+                                $prevDay->modify('-1 day');
+                                $nextDay = clone $date;
+                                $nextDay->modify('+1 day');
+
+                                echo '<a href="' . generateCalendarNavUrl($petId, $prevDay->format('n'), $prevDay->format('Y'), $currentView, $prevDay->format('j')) . '" class="btn btn-sm btn-outline">&lt; Día Anterior</a>';
+                                echo '<h3>' . $date->format('d M Y') . '</h3>';
+                                echo '<a href="' . generateCalendarNavUrl($petId, $nextDay->format('n'), $nextDay->format('Y'), $currentView, $nextDay->format('j')) . '" class="btn btn-sm btn-outline">Día Siguiente &gt;</a>';
+                            }
+                            echo '</div>';
+
+                            if ($currentView === 'month') {
+                                $date = new DateTime("$currentYear-$currentMonth-01");
+                                $daysInMonth = $date->format('t');
+                                $firstDayOfWeek = $date->format('N'); // 1 (for Monday) through 7 (for Sunday)
+
+                                $calendar = [];
+                                $dayCounter = 1;
+
+                                // Rellenar días vacíos al principio del mes
+                                for ($i = 1; $i < $firstDayOfWeek; $i++) {
+                                    $calendar[] = null;
+                                }
+
+                                // Rellenar días del mes
+                                while ($dayCounter <= $daysInMonth) {
+                                    $currentDate = sprintf("%04d-%02d-%02d", $currentYear, $currentMonth, $dayCounter);
+                                    $calendar[] = [
+                                        'date' => $currentDate,
+                                        'day' => $dayCounter,
+                                        'routines' => [],
+                                        'events' => []
+                                    ];
+                                    $dayCounter++;
+                                }
+
+                                // Asignar rutinas y eventos a los días del calendario
+                                foreach ($calendar as &$dayData) {
+                                    if ($dayData === null) continue;
+
+                                    $dateStr = $dayData['date'];
+                                    $dayOfWeek = strtolower(date('l', strtotime($dateStr)));
+                                    $dayInSpanish = [
+                                        'monday' => 'lunes',
+                                        'tuesday' => 'martes',
+                                        'wednesday' => 'miercoles',
+                                        'thursday' => 'jueves',
+                                        'friday' => 'viernes',
+                                        'saturday' => 'sabado',
+                                        'sunday' => 'domingo'
+                                    ][$dayOfWeek];
+
+                                    foreach ($petRoutines as $routine) {
+                                        $diasSemana = explode(',', $routine['dias_semana']);
+                                        if (in_array($dayInSpanish, $diasSemana)) {
+                                            $dayData['routines'][] = $routine;
+                                        }
+                                    }
+
+                                    foreach ($petEvents as $event) {
+                                        if (date('Y-m-d', strtotime($event['fecha_evento'])) == $dateStr) {
+                                            $dayData['events'][] = $event;
+                                        }
+                                    }
+                                }
+                                unset($dayData); // Romper la referencia del último elemento
+
+                                ?>
+
+                                <div class="calendar-grid">
+                                    <div class="calendar-day-header">Lun</div>
+                                    <div class="calendar-day-header">Mar</div>
+                                    <div class="calendar-day-header">Mié</div>
+                                    <div class="calendar-day-header">Jue</div>
+                                    <div class="calendar-day-header">Vie</div>
+                                    <div class="calendar-day-header">Sáb</div>
+                                    <div class="calendar-day-header">Dom</div>
+
+                                    <?php foreach ($calendar as $dayData): ?>
+                                        <?php if ($dayData === null): ?>
+                                            <div class="calendar-day empty"></div>
+                                        <?php else: ?>
+                                            <div class="calendar-day <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>">
+                                                <span class="day-number"><?php echo $dayData['day']; ?></span>
+                                                <div class="day-events">
+                                                    <?php foreach ($dayData['routines'] as $routine): ?>
+                                                        <div class="event-item routine-event">
+                                                            <span class="event-icon"><?php echo getActivityIcon($routine['tipo_actividad']); ?></span>
+                                                            <span class="event-time"><?php echo date('H:i', strtotime($routine['hora_programada'])); ?></span>
+                                                            <span class="event-title"><?php echo htmlspecialchars($routine['nombre_actividad']); ?></span>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                    <?php foreach ($dayData['events'] as $event): ?>
+                                                        <div class="event-item calendar-event">
+                                                            <span class="event-icon">🏥</span>
+                                                            <span class="event-time"><?php echo date('H:i', strtotime($event['fecha_evento'])); ?></span>
+                                                            <span class="event-title"><?php echo htmlspecialchars($event['titulo']); ?></span>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
-                                </ul>
-                            <?php endif; ?>
+                                </div>
+                            <?php } elseif ($currentView === 'week') {
+                                // Lógica para la vista semanal
+                                $date = new DateTime("$currentYear-$currentMonth-$currentDay");
+                                $startOfWeek = clone $date;
+                                $startOfWeek->modify('monday this week');
+                                $endOfWeek = clone $startOfWeek;
+                                $endOfWeek->modify('+6 days');
+
+                                $weekDays = [];
+                                $interval = new DateInterval('P1D');
+                                $period = new DatePeriod($startOfWeek, $interval, $endOfWeek->modify('+1 day'));
+
+                                foreach ($period as $day) {
+                                    $dayData = [
+                                        'date' => $day->format('Y-m-d'),
+                                        'day_name' => $monthNames[$day->format('n')] . ' ' . $day->format('j'),
+                                        'routines' => [],
+                                        'events' => []
+                                    ];
+
+                                    $dayOfWeek = strtolower($day->format('l'));
+                                    $dayInSpanish = [
+                                        'monday' => 'lunes',
+                                        'tuesday' => 'martes',
+                                        'wednesday' => 'miercoles',
+                                        'thursday' => 'jueves',
+                                        'friday' => 'viernes',
+                                        'saturday' => 'sabado',
+                                        'sunday' => 'domingo'
+                                    ][$dayOfWeek];
+
+                                    foreach ($petRoutines as $routine) {
+                                        $diasSemana = explode(',', $routine['dias_semana']);
+                                        if (in_array($dayInSpanish, $diasSemana)) {
+                                            $dayData['routines'][] = $routine;
+                                        }
+                                    }
+
+                                    foreach ($petEvents as $event) {
+                                        if (date('Y-m-d', strtotime($event['fecha_evento'])) == $day->format('Y-m-d')) {
+                                            $dayData['events'][] = $event;
+                                        }
+                                    }
+                                    $weekDays[] = $dayData;
+                                }
+                                ?>
+                                <div class="calendar-week-grid">
+                                    <?php foreach ($weekDays as $dayData): ?>
+                                        <div class="calendar-day-week-view <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>">
+                                            <span class="day-number"><?php echo $dayData['day_name']; ?></span>
+                                            <div class="day-events">
+                                                <?php foreach ($dayData['routines'] as $routine): ?>
+                                                    <div class="event-item routine-event">
+                                                        <span class="event-icon"><?php echo getActivityIcon($routine['tipo_actividad']); ?></span>
+                                                        <span class="event-time"><?php echo date('H:i', strtotime($routine['hora_programada'])); ?></span>
+                                                        <span class="event-title"><?php echo htmlspecialchars($routine['nombre_actividad']); ?></span>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                                <?php foreach ($dayData['events'] as $event): ?>
+                                                    <div class="event-item calendar-event">
+                                                        <span class="event-icon">🏥</span>
+                                                        <span class="event-time"><?php echo date('H:i', strtotime($event['fecha_evento'])); ?></span>
+                                                        <span class="event-title"><?php echo htmlspecialchars($event['titulo']); ?></span>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php } elseif ($currentView === 'day') {
+                                // Lógica para la vista diaria
+                                $date = new DateTime("$currentYear-$currentMonth-$currentDay");
+                                $dayData = [
+                                    'date' => $date->format('Y-m-d'),
+                                    'day_name' => $monthNames[$date->format('n')] . ' ' . $date->format('j') . ', ' . $date->format('Y'),
+                                    'routines' => [],
+                                    'events' => []
+                                ];
+
+                                $dayOfWeek = strtolower($date->format('l'));
+                                $dayInSpanish = [
+                                    'monday' => 'lunes',
+                                    'tuesday' => 'martes',
+                                    'wednesday' => 'miercoles',
+                                    'thursday' => 'jueves',
+                                    'friday' => 'viernes',
+                                    'saturday' => 'sabado',
+                                    'sunday' => 'domingo'
+                                ][$dayOfWeek];
+
+                                foreach ($petRoutines as $routine) {
+                                    $diasSemana = explode(',', $routine['dias_semana']);
+                                    if (in_array($dayInSpanish, $diasSemana)) {
+                                        $dayData['routines'][] = $routine;
+                                    }
+                                }
+
+                                foreach ($petEvents as $event) {
+                                    if (date('Y-m-d', strtotime($event['fecha_evento'])) == $date->format('Y-m-d')) {
+                                        $dayData['events'][] = $event;
+                                    }
+                                }
+                                ?>
+                                <div class="calendar-day-view">
+                                    <div class="calendar-day-single-view <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>">
+                                        <span class="day-number">Eventos para <?php echo $dayData['day_name']; ?></span>
+                                        <div class="day-events">
+                                            <?php if (empty($dayData['routines']) && empty($dayData['events'])): ?>
+                                                <p class="text-muted">No hay eventos ni rutinas para este día.</p>
+                                            <?php else: ?>
+                                                <?php foreach ($dayData['routines'] as $routine): ?>
+                                                    <div class="event-item routine-event">
+                                                        <span class="event-icon"><?php echo getActivityIcon($routine['tipo_actividad']); ?></span>
+                                                        <span class="event-time"><?php echo date('H:i', strtotime($routine['hora_programada'])); ?></span>
+                                                        <span class="event-title"><?php echo htmlspecialchars($routine['nombre_actividad']); ?></span>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                                <?php foreach ($dayData['events'] as $event): ?>
+                                                    <div class="event-item calendar-event">
+                                                        <span class="event-icon">🏥</span>
+                                                        <span class="event-time"><?php echo date('H:i', strtotime($event['fecha_evento'])); ?></span>
+                                                        <span class="event-title"><?php echo htmlspecialchars($event['titulo']); ?></span>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
 
@@ -237,6 +519,27 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const petMeasurements = <?php echo json_encode($measurements); ?>;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarViewSelector = document.getElementById('calendarViewSelector');
+            if (calendarViewSelector) {
+                calendarViewSelector.addEventListener('change', function() {
+                    const selectedView = this.value;
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.set('view', selectedView);
+                    // Por ahora, todas las vistas redirigen a la vista mensual
+                    // En futuras implementaciones, aquí se cargaría la vista correspondiente
+                    window.location.href = currentUrl.toString();
+                });
+
+                // Mantener la opción seleccionada en el dropdown al recargar la página
+                const urlParams = new URLSearchParams(window.location.search);
+                const currentView = urlParams.get('view');
+                if (currentView) {
+                    calendarViewSelector.value = currentView;
+                }
+            }
+        });
     </script>
     <script src="../../js/charts.js"></script>
 </body>
