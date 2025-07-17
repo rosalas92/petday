@@ -194,6 +194,9 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                             <?php if (empty($measurements)): ?>
                                 <p class="text-muted">No hay registros de medidas para esta mascota.</p>
                             <?php else: ?>
+                                <div class="chart-container" style="position: relative; margin-bottom: 20px;">
+                                    <canvas id="weightChart"></canvas>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-striped">
                                         <thead>
@@ -212,9 +215,9 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                                     <td><?php echo formatDateSpanish($measurement['fecha_medicion']); ?></td>
                                                     <td><?php echo htmlspecialchars($measurement['peso'] ?? '-'); ?></td>
                                                     <td><?php echo htmlspecialchars($measurement['altura'] ?? '-'); ?></td>
-                                                    <td><?php echo htmlspecialchars($measurement['longitud'] ?? '-'); ?></td>
-                                                    <td><?php echo htmlspecialchars($measurement['circunferencia_cuello'] ?? '-'); ?></td>
-                                                    <td><?php echo htmlspecialchars($measurement['notas'] ?? '-'); ?></td>
+                                                    <td><?php htmlspecialchars($measurement['longitud'] ?? '-'); ?></td>
+                                                    <td><?php htmlspecialchars($measurement['circunferencia_cuello'] ?? '-'); ?></td>
+                                                    <td><?php htmlspecialchars($measurement['notas'] ?? '-'); ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -231,5 +234,10 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
     <footer class="main-footer">
         <!-- ... (footer) ... -->
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const petMeasurements = <?php echo json_encode($measurements); ?>;
+    </script>
+    <script src="../../js/charts.js"></script>
 </body>
 </html>

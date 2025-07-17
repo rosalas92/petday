@@ -1920,8 +1920,16 @@ body {
 }
 
 /* Measurements Section */
-.measurements-section {
-    margin-top: var(--spacing-xl);
+.measurements-section .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.chart-container {
+    height: 400px; /* Altura fija para el contenedor del gráfico */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    margin-bottom: var(--spacing-md);
 }
 
 .table-responsive {
