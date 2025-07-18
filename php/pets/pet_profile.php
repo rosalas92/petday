@@ -515,34 +515,4 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
         </section>
     </main>
 
-    <footer class="main-footer">
-        <!-- ... (footer) ... -->
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const petMeasurements = <?php echo json_encode($measurements); ?>;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const calendarViewSelector = document.getElementById('calendarViewSelector');
-            if (calendarViewSelector) {
-                calendarViewSelector.addEventListener('change', function() {
-                    const selectedView = this.value;
-                    const currentUrl = new URL(window.location.href);
-                    currentUrl.searchParams.set('view', selectedView);
-                    // Por ahora, todas las vistas redirigen a la vista mensual
-                    // En futuras implementaciones, aquí se cargaría la vista correspondiente
-                    window.location.href = currentUrl.toString();
-                });
-
-                // Mantener la opción seleccionada en el dropdown al recargar la página
-                const urlParams = new URLSearchParams(window.location.search);
-                const currentView = urlParams.get('view');
-                if (currentView) {
-                    calendarViewSelector.value = currentView;
-                }
-            }
-        });
-    </script>
-    <script src="../../js/charts.js"></script>
-</body>
-</html>
+    <?php include_once __DIR__ . '/../includes/footer.php'; ?>

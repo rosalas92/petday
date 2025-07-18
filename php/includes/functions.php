@@ -1263,13 +1263,7 @@ function formatDateSpanish($date) {
  * @param int $userId ID del usuario.
  * @return string El token generado.
  */
-function setResetToken($userId) {
-    $token = bin2hex(random_bytes(32));
-    $expires = date('Y-m-d H:i:s', strtotime('+1 hour')); // Token válido por 1 hora
 
-    executeStatement('UPDATE usuarios SET reset_token = ?, reset_token_expires_at = ? WHERE id_usuario = ?', [$token, $expires, $userId]);
-    return $token;
-}
 
 /**
  * Valida un token de restablecimiento de contraseña.

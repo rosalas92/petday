@@ -121,15 +121,4 @@ $pets = getUserPets($userId);
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-bottom">
-                <p>&copy; <?php echo date('Y'); ?> PetDay. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="../../js/app.js"></script>
-</body>
-</html>
+    <?php include_once __DIR__ . '/../includes/footer.php'; ?>

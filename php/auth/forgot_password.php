@@ -139,12 +139,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
     </main>
 
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-bottom">
-                <p>&copy; <?php echo date('Y'); ?> PetDay. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
-</body>
-</html>
+    <?php include_once __DIR__ . '/../includes/footer.php'; ?>

@@ -153,20 +153,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </section>
     </main>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const selectAllDaysBtn = document.getElementById('selectAllDaysBtn');
-            const daysOfWeekCheckboxes = document.getElementById('daysOfWeekCheckboxes');
-
-            if (selectAllDaysBtn && daysOfWeekCheckboxes) {
-                selectAllDaysBtn.addEventListener('click', function() {
-                    const checkboxes = daysOfWeekCheckboxes.querySelectorAll('input[type="checkbox"]');
-                    checkboxes.forEach(checkbox => {
-                        checkbox.checked = true;
-                    });
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+    <?php include_once __DIR__ . '/../includes/footer.php'; ?>

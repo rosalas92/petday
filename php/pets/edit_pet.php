@@ -181,8 +181,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </section>
     </main>
 
-    <footer class="main-footer">
-        <!-- ... (mismo footer) ... -->
-    </footer>
-</body>
-</html>
+    <?php include_once __DIR__ . '/../includes/footer.php'; ?>
