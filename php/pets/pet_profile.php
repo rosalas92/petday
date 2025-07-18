@@ -124,6 +124,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                             </div>
                                             <div class="routine-item-actions">
                                                 <a href="../routines/edit_routine.php?id=<?php echo $routine['id_rutina']; ?>" class="btn btn-xs btn-outline">Editar</a>
+                                                <a href="../routines/delete_routine.php?id=<?php echo $routine['id_rutina']; ?>" class="btn btn-xs btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta rutina? Esta acción no se puede deshacer.');">Eliminar</a>
                                             </div>
                                         </div>
                                     <?php endforeach; ?>

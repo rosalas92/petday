@@ -71,7 +71,7 @@ body {
 
 /* Container */
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
 }
@@ -1623,7 +1623,7 @@ body {
 
 .profile-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(425px, 1fr));
     gap: var(--spacing-xl);
 }
 
@@ -1807,9 +1807,10 @@ body {
 .event-item {
     display: flex;
     align-items: center;
-    gap: 5px;
+    flex-direction: column;
+    /* gap: 5px; */
     font-size: var(--font-size-xs);
-    padding: 3px 5px;
+    /* padding: 3px 5px; */
     border-radius: var(--radius-sm);
     white-space: nowrap;
     overflow: hidden;
