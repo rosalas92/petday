@@ -1766,7 +1766,7 @@ body {
 .calendar-day {
     background: var(--white);
     padding: var(--spacing-sm);
-    min-height: 140px; /* Aumenta la altura mínima para los días del calendario */
+    min-height: 100px; /* Altura mínima más flexible para los días del calendario */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1817,7 +1817,7 @@ body {
 .calendar-day-week-view {
     background: var(--white);
     padding: var(--spacing-sm);
-    min-height: 150px; /* Altura mínima para los días de la semana */
+    min-height: 120px; /* Altura mínima más flexible para los días de la semana */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1839,7 +1839,7 @@ body {
 
 .calendar-day-week-view .day-events {
     overflow-y: auto; /* Permite el scroll si hay muchos eventos en la vista semanal */
-    max-height: 100px; /* Limita la altura de los eventos en la vista semanal */
+    max-height: 80px; /* Limita la altura de los eventos en la vista semanal */
 }
 
 .calendar-day-single-view {

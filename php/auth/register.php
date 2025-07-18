@@ -4,6 +4,7 @@
  */
 
 session_start();
+require_once __DIR__ . '/../../config/config.php'; // Cargar primero para definir constantes
 require_once '../../config/database_config.php';
 require_once '../includes/functions.php';
 
@@ -47,13 +48,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
         try {
-            $sql = 'INSERT INTO usuarios (nombre_completo, email, password_hash) VALUES (?, ?, ?)';
-            insertAndGetId($sql, [$nombre_completo, $email, $password_hash]);
-            
-            $successMessage = '¡Registro completado con éxito! Ahora puedes <a href="login.php">iniciar sesión</a>.';
+            $verification_token = bin2hex(random_bytes(16)); // Generar un token único
 
-            // Enviar correo de bienvenida
-            sendRegistrationEmail($email, $nombre_completo);
+            $sql = 'INSERT INTO usuarios (nombre_completo, email, password_hash, token, is_verified) VALUES (?, ?, ?, ?, ?)';
+            insertAndGetId($sql, [$nombre_completo, $email, $password_hash, $verification_token, 0]);
+            
+            // Enviar correo de verificación usando PHPMailer
+            require_once __DIR__ . '/../../config/config.php';
+            require_once __DIR__ . '/../../vendor/autoload.php';
+
+            $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+
+            try {
+                // Configuración del servidor SMTP desde config.php
+                $mail->isSMTP();
+                $mail->Host = MAIL_HOST;
+                $mail->SMTPAuth = true;
+                $mail->Username = MAIL_USER;
+                $mail->Password = MAIL_PASS;
+                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
+                $mail->CharSet = 'UTF-8';
+
+                // Configuración para depuración (opcional)
+                if (defined('DEBUG_MAIL') && DEBUG_MAIL) {
+                    $mail->SMTPDebug = PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;
+                }
+
+                // Destinatarios
+                $mail->setFrom(MAIL_USER, 'PetDay');
+                $mail->addAddress($email, $nombre_completo);
+
+                // Contenido del correo
+                $mail->isHTML(true);
+                $mail->Subject = "Verifica tu correo electrónico para PetDay";
+                $verification_link = URL_ADMIN . "/php/auth/verify_email.php?token=" . $verification_token;
+                $mail->Body = "<p>Hola " . htmlspecialchars($nombre_completo) . ",</p>";
+                $mail->Body .= "<p>Gracias por registrarte en PetDay. Por favor, haz clic en el siguiente enlace para verificar tu correo electrónico:</p>";
+                $mail->Body .= '<p><a href="' . $verification_link . '">' . $verification_link . '</a></p>';
+                $mail->Body .= "<p>Si no te registraste en PetDay, por favor ignora este correo.</p>";
+                $mail->Body .= "<p>Atentamente,<br>El equipo de PetDay</p>";
+                $mail->AltBody = 'Para verificar tu correo, copia y pega este enlace en tu navegador: ' . $verification_link;
+
+                $mail->send();
+                $successMessage = '¡Registro completado con éxito! Se ha enviado un enlace de verificación a tu correo electrónico. Por favor, verifica tu bandeja de entrada para activar tu cuenta.';
+            } catch (Exception $e) {
+                $errors[] = "Error al enviar el correo de verificación: {$mail->ErrorInfo}";
+                // Opcional: loggear el error real para depuración
+                error_log('PHPMailer Error: ' . $e->getMessage());
+            }
 
         } catch (PDOException $e) {
             $errors[] = 'Error al registrar el usuario. Por favor, inténtalo de nuevo.';

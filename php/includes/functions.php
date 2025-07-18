@@ -1258,4 +1258,48 @@ function formatDateSpanish($date) {
     
     return "$day de $month de $year";
 }
+/**
+ * Genera y guarda un token de restablecimiento de contraseña para un usuario.
+ * @param int $userId ID del usuario.
+ * @return string El token generado.
+ */
+function setResetToken($userId) {
+    $token = bin2hex(random_bytes(32));
+    $expires = date('Y-m-d H:i:s', strtotime('+1 hour')); // Token válido por 1 hora
+
+    executeStatement('UPDATE usuarios SET reset_token = ?, reset_token_expires_at = ? WHERE id_usuario = ?', [$token, $expires, $userId]);
+    return $token;
+}
+
+/**
+ * Valida un token de restablecimiento de contraseña.
+ * @param string $token El token a validar.
+ * @return array|false Los datos del usuario si el token es válido y no ha expirado, o false en caso contrario.
+ */
+function validateResetToken($token) {
+    $user = fetchOne('SELECT id_usuario, reset_token_expires_at FROM usuarios WHERE reset_token = ?', [$token]);
+
+    if ($user && strtotime($user['reset_token_expires_at']) > time()) {
+        return $user;
+    }
+    return false;
+}
+
+/**
+ * Actualiza la contraseña de un usuario y limpia el token de restablecimiento.
+ * @param int $userId ID del usuario.
+ * @param string $newPassword La nueva contraseña en texto plano.
+ * @return bool True si la contraseña se actualizó con éxito, false en caso contrario.
+ */
+function updatePasswordAndClearToken($userId, $newPassword) {
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+    try {
+        executeStatement('UPDATE usuarios SET password_hash = ?, reset_token = NULL, reset_token_expires_at = NULL WHERE id_usuario = ?', [$hashedPassword, $userId]);
+        return true;
+    } catch (Exception $e) {
+        logError("Error al actualizar contraseña y limpiar token: " . $e->getMessage(), __FILE__, __LINE__);
+        return false;
+    }
+}
+
 ?>

@@ -5,13 +5,7 @@
  */
 
 session_start();
-
-// Si ya está logueado, redirigir al dashboard
-if (isset($_SESSION['user_id'])) {
-    header('Location: ../../index.php');
-    exit();
-}
-
+require_once __DIR__ . '/../../config/config.php'; // Cargar primero para definir constantes
 require_once '../../config/database_config.php';
 require_once '../includes/functions.php';
 
@@ -33,15 +27,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = fetchOne('SELECT * FROM usuarios WHERE email = ?', [$email]);
         
         if ($user && password_verify($password, $user['password_hash'])) {
-            // Login exitoso
-            $_SESSION['user_id'] = $user['id_usuario'];
-            $_SESSION['user_name'] = $user['nombre_completo'];
-            $_SESSION['user_role'] = $user['rol'];
-            $_SESSION['login_time'] = time();
-            
-            // Redirigir al dashboard
-            header('Location: ../../index.php');
-            exit();
+            if ($user['is_verified'] == 1) {
+                // Login exitoso
+                $_SESSION['user_id'] = $user['id_usuario'];
+                $_SESSION['user_name'] = $user['nombre_completo'];
+                $_SESSION['user_role'] = $user['rol'];
+                $_SESSION['login_time'] = time();
+                
+                // Redirigir al dashboard
+                header('Location: ../../index.php');
+                exit();
+            } else {
+                $error = 'Tu cuenta no ha sido verificada. Por favor, revisa tu correo electrónico para el enlace de verificación.';
+            }
         } else {
             $error = 'Email o contraseña incorrectos.';
         }
@@ -51,6 +49,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Mensaje si viene de un registro exitoso
 if (isset($_GET['registered']) && $_GET['registered'] === 'success') {
     $success = '¡Registro completado! Ya puedes iniciar sesión.';
+}
+
+// Mostrar mensajes de verificación de correo
+if (isset($_SESSION['verification_message'])) {
+    $messageType = $_SESSION['verification_message_type'] ?? 'info';
+    $message = $_SESSION['verification_message'];
+    if ($messageType === 'success') {
+        $success = $message;
+    } else {
+        $error = $message;
+    }
+    unset($_SESSION['verification_message']);
+    unset($_SESSION['verification_message_type']);
 }
 
 ?>
