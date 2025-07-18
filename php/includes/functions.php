@@ -1294,7 +1294,7 @@ function validateResetToken($token) {
 function updatePasswordAndClearToken($userId, $newPassword) {
     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
     try {
-        executeStatement('UPDATE usuarios SET password_hash = ?, reset_token = NULL, reset_token_expires_at = NULL WHERE id_usuario = ?', [$hashedPassword, $userId]);
+        executeQuery('UPDATE usuarios SET password_hash = ?, reset_token = NULL, reset_token_expires_at = NULL WHERE id_usuario = ?', [$hashedPassword, $userId]);
         return true;
     } catch (Exception $e) {
         logError("Error al actualizar contraseña y limpiar token: " . $e->getMessage(), __FILE__, __LINE__);

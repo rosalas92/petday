@@ -3,8 +3,10 @@
  * PetDay - Script para Enviar Mensajes de Contacto
  */
 
+require_once __DIR__ . '/../../config/config.php'; // Cargar primero para definir constantes
 require_once '../../config/database_config.php'; // Para funciones como sanitizeInput
 require_once '../includes/functions.php'; // Para funciones como logError
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 $response = [
     'success' => false,
@@ -23,26 +25,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $response['message'] = 'El correo electrónico no es válido.';
     } else {
-        // Dirección de correo a la que se enviará el mensaje
-        $to = 'soporte@petday.com'; // ¡CAMBIA ESTO A TU CORREO REAL!
-        $email_subject = "Mensaje de Contacto PetDay: " . $subject;
-        $email_body = "Has recibido un nuevo mensaje de contacto de PetDay.\n\n"
-                      . "Nombre: " . $name . "\n"
-                      . "Email: " . $email . "\n"
-                      . "Asunto: " . $subject . "\n"
-                      . "Mensaje:\n" . $message;
-        
-        $headers = "From: no-reply@petday.com\r\n";
-        $headers .= "Reply-To: " . $email . "\r\n";
-        $headers .= "X-Mailer: PHP/" . phpversion();
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
-        // Intentar enviar el correo
-        if (@mail($to, $email_subject, $email_body, $headers)) {
+        try {
+            // Configuración del servidor SMTP desde config.php
+            $mail->isSMTP();
+            $mail->Host = MAIL_HOST;
+            $mail->SMTPAuth = true;
+            $mail->Username = MAIL_USER;
+            $mail->Password = MAIL_PASS;
+            $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = 587;
+            $mail->CharSet = 'UTF-8';
+
+            // Configuración para depuración (opcional)
+            if (defined('DEBUG_MAIL') && DEBUG_MAIL) {
+                $mail->SMTPDebug = PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;
+            }
+
+            // Destinatarios
+            $mail->setFrom(MAIL_USER, 'PetDay Contacto');
+            $mail->addAddress('soporte@petday.com', 'Soporte PetDay'); // Cambia esto a tu correo real
+            $mail->addReplyTo($email, $name);
+
+            // Contenido del correo
+            $mail->isHTML(true);
+            $mail->Subject = "Mensaje de Contacto PetDay: " . $subject;
+            $mail->Body = "<p>Has recibido un nuevo mensaje de contacto de PetDay.</p>";
+            $mail->Body .= "<ul>";
+            $mail->Body .= "<li><strong>Nombre:</strong> " . htmlspecialchars($name) . "</li>";
+            $mail->Body .= "<li><strong>Email:</strong> " . htmlspecialchars($email) . "</li>";
+            $mail->Body .= "<li><strong>Asunto:</strong> " . htmlspecialchars($subject) . "</li>";
+            $mail->Body .= "</ul>";
+            $mail->Body .= "<p><strong>Mensaje:</strong><br>" . nl2br(htmlspecialchars($message)) . "</p>";
+            $mail->AltBody = "Has recibido un nuevo mensaje de contacto de PetDay.\n\n" .
+                             "Nombre: " . $name . "\n" .
+                             "Email: " . $email . "\n" .
+                             "Asunto: " . $subject . "\n" .
+                             "Mensaje:\n" . $message;
+
+            $mail->send();
             $response['success'] = true;
             $response['message'] = '¡Gracias! Tu mensaje ha sido enviado con éxito.';
-        } else {
-            $response['message'] = 'Hubo un problema al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.';
-            logError("Error al enviar correo de contacto desde: " . $email . " - " . error_get_last()['message'], __FILE__, __LINE__);
+        } catch (Exception $e) {
+            $response['message'] = "Hubo un problema al enviar tu mensaje: {$mail->ErrorInfo}";
+            logError("Error al enviar correo de contacto: " . $e->getMessage(), __FILE__, __LINE__);
         }
     }
 } else {

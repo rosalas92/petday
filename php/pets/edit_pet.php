@@ -4,6 +4,7 @@
  */
 
 session_start();
+require_once __DIR__ . '/../../config/config.php'; // Cargar primero para definir constantes
 require_once '../../config/database_config.php';
 require_once '../includes/functions.php';
 
