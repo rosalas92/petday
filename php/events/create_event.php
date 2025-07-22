@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Nuevo Evento - PetDay</title>
     <link rel="stylesheet" href="../../css/style.css?v=1.3">
+    <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
     <!-- ... (header) ... -->

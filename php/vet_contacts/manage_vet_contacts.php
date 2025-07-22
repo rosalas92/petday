@@ -26,6 +26,7 @@ $vetContacts = getAllVetContacts($userId);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Contactos Veterinarios - PetDay</title>
     <link rel="stylesheet" href="../../css/style.css?v=1.5">
+    <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
     <header class="main-header">

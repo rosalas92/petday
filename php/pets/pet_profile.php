@@ -35,6 +35,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de <?php echo htmlspecialchars($pet['nombre']); ?> - PetDay</title>
     <link rel="stylesheet" href="../../css/style.css?v=1.3">
+    <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
     <header class="main-header">
@@ -71,8 +72,6 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
 
                 <!-- Contenido del Perfil -->
                 <div class="profile-content">
-                    
-
                     <div class="routines-section card">
                         <div class="card-header">
                             <h3 class="card-title">Rutinas Semanales</h3>
@@ -102,7 +101,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                         </div>
                     </div>
 
-                    <div class="events-section card">
+                    <div class="events-section card full-width-card">
                         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                             <h3 class="card-title">Calendario de Eventos y Rutinas</h3>
                             <div style="display: flex; align-items: center; gap: 10px;">

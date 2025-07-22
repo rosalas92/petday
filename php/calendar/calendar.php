@@ -124,6 +124,7 @@ $monthNames = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario - PetDay</title>
     <link rel="stylesheet" href="../../css/style.css?v=1.6">
+    <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
     <header class="main-header">
