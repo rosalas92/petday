@@ -71,38 +71,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
 
                 <!-- Contenido del Perfil -->
                 <div class="profile-content">
-                    <div class="medical-card-section card">
-                        <div class="card-header">
-                            <h3 class="card-title">Cartilla Sanitaria</h3>
-                        </div>
-                        <div class="card-body">
-                            <?php 
-                                $lastVaccine = getLatestMedicalRecordByType($petId, 'vacuna');
-                                $allergies = getAllergies($petId);
-                                $activeMedications = getActiveMedications($petId);
-                            ?>
-                            <p><strong>Última Vacuna:</strong> <?php echo $lastVaccine ? formatDateSpanish($lastVaccine['fecha_registro']) . ' (' . htmlspecialchars($lastVaccine['titulo']) . ')' : 'No registrada'; ?></p>
-                            <p><strong>Alergias:</strong> 
-                                <?php if (!empty($allergies)): ?>
-                                    <?php foreach ($allergies as $allergy): ?>
-                                        <span class="badge badge-danger"><?php echo htmlspecialchars($allergy['titulo']); ?></span>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    Ninguna conocida
-                                <?php endif; ?>
-                            </p>
-                            <p><strong>Medicación Activa:</strong> 
-                                <?php if (!empty($activeMedications)): ?>
-                                    <?php foreach ($activeMedications as $medication): ?>
-                                        <span class="badge badge-info"><?php echo htmlspecialchars($medication['nombre_medicamento']); ?> (<?php echo htmlspecialchars($medication['dosis']); ?>)</span>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    Ninguna
-                                <?php endif; ?>
-                            </p>
-                            <!-- Puedes añadir más campos relevantes aquí -->
-                        </div>
-                    </div>
+                    
 
                     <div class="routines-section card">
                         <div class="card-header">
