@@ -1296,4 +1296,62 @@ function updatePasswordAndClearToken($userId, $newPassword) {
     }
 }
 
+/**
+ * Crea un nuevo registro en la cartilla sanitaria.
+ * @param int $petId ID de la mascota.
+ * @param string $nombreDocumento Nombre del documento.
+ * @param string $fechaDocumento Fecha del documento.
+ * @param string $filePath Ruta del archivo.
+ * @param string $tipoArchivo Tipo de archivo.
+ * @return int ID del registro creado.
+ */
+function createCartillaRecord($petId, $nombreDocumento, $fechaDocumento, $filePath, $tipoArchivo) {
+    $sql = "INSERT INTO cartilla_sanitaria (id_mascota, nombre_documento, fecha_documento, archivo_path, tipo_archivo) 
+            VALUES (?, ?, ?, ?, ?)";
+    
+    return insertAndGetId($sql, [
+        $petId,
+        $nombreDocumento,
+        $fechaDocumento,
+        $filePath,
+        $tipoArchivo
+    ]);
+}
+
+/**
+ * Obtiene todos los registros de la cartilla sanitaria de una mascota.
+ * @param int $petId ID de la mascota.
+ * @return array Lista de registros de la cartilla.
+ */
+function getCartillaRecordsByPetId($petId) {
+    $sql = "SELECT * FROM cartilla_sanitaria WHERE id_mascota = ? ORDER BY fecha_documento DESC";
+    return fetchAll($sql, [$petId]);
+}
+
+/**
+ * Obtiene un registro de la cartilla sanitaria por su ID.
+ * @param int $recordId ID del registro.
+ * @return array|false Datos del registro o false si no se encuentra.
+ */
+function getCartillaRecordById($recordId) {
+    $sql = "SELECT * FROM cartilla_sanitaria WHERE id_cartilla = ?";
+    return fetchOne($sql, [$recordId]);
+}
+
+/**
+ * Elimina un registro de la cartilla sanitaria.
+ * @param int $recordId ID del registro.
+ * @return bool Éxito de la operación.
+ */
+function deleteCartillaRecord($recordId) {
+    $sql = "DELETE FROM cartilla_sanitaria WHERE id_cartilla = ?";
+    try {
+        $stmt = executeQuery($sql, [$recordId]);
+        return $stmt->rowCount() > 0;
+    } catch (Exception $e) {
+        logError($e->getMessage(), __FILE__, __LINE__);
+        return false;
+    }
+}
+
 ?>

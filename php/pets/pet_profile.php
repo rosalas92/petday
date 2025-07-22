@@ -68,6 +68,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                     </div>
                     <div class="profile-actions">
                         <a href="edit_pet.php?id=<?php echo $petId; ?>" class="btn btn-primary">Editar Perfil</a>
+                        <a href="../medical_records/cartilla_sanitaria.php?id=<?php echo $petId; ?>" class="btn btn-outline">Cartilla Sanitaria</a>
                     </div>
                 </div>
 
