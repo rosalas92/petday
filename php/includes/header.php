@@ -12,8 +12,7 @@
     <div class="container">
         <div class="header-content">
             <a href="<?php echo URL_ADMIN; ?>/index.php" class="logo">
-                <span class="logo-icon">🐾</span>
-                <h1>PetDay</h1>
+                <img src="<?php echo URL_ADMIN; ?>/images/logotipo.png" alt="PetDay Logo" style="height: 100px;">
             </a>
             
             <nav class="main-nav">
