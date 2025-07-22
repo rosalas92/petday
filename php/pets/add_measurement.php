@@ -16,6 +16,9 @@ if (!isset($_SESSION['user_id'])) {
 $userId = $_SESSION['user_id'];
 $user = getUserById($userId);
 
+// Variables para el header.php
+$isLoggedIn = true;
+
 $petId = filter_input(INPUT_GET, 'pet_id', FILTER_VALIDATE_INT);
 if (!$petId || !isUserPetOwner($userId, $petId)) {
     header('Location: manage_pets.php?status=error');
@@ -75,31 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="../../index.php" class="logo">
-                    <span class="logo-icon">🐾</span>
-                    <h1>PetDay</h1>
-                </a>
-                <nav class="main-nav">
-                    <div class="user-menu">
-                        <span class="welcome-text">Hola, <?php echo htmlspecialchars($user['nombre_completo']); ?></span>
-                        <div class="user-dropdown">
-                            <button class="user-btn">👤</button>
-                            <div class="dropdown-content">
-                                <a href="manage_pets.php">Mis Mascotas</a>
-                                <a href="../reports/reports.php">Reportes</a>
-                                <a href="../calendar/calendar.php">Calendario</a>
-                                <a href="../vet_contacts/manage_vet_contacts.php">Veterinarios</a>
-                                <a href="../auth/logout.php">Cerrar Sesión</a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
+    <?php include_once __DIR__ . '/../includes/header.php'; ?>
 
     <main class="main-content">
         <section class="add-measurement-form">

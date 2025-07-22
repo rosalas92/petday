@@ -14,6 +14,11 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $userId = $_SESSION['user_id'];
+$user = getUserById($userId);
+
+// Variables para el header.php
+$isLoggedIn = true;
+
 $errors = [];
 
 $routineId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -70,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
-    <!-- ... (header) ... -->
+    <?php include_once __DIR__ . '/../includes/header.php'; ?>
     <main class="main-content">
         <section class="edit-routine-form">
             <div class="container">

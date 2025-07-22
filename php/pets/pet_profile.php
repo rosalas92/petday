@@ -16,6 +16,9 @@ if (!isset($_SESSION['user_id'])) {
 $userId = $_SESSION['user_id'];
 $user = getUserById($userId);
 
+// Variables para el header.php
+$isLoggedIn = true;
+
 $petId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$petId || !isUserPetOwner($userId, $petId)) {
     header('Location: manage_pets.php?status=error');
@@ -38,9 +41,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
-    <header class="main-header">
-        <!-- ... (header similar a otras páginas de la sección) ... -->
-    </header>
+    <?php include_once __DIR__ . '/../includes/header.php'; ?>
 
     <main class="main-content">
         <section class="pet-profile-page">
@@ -482,5 +483,61 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
             </div>
         </section>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Datos para el gráfico de peso (ya existente)
+        const weightData = {
+            labels: [],
+            datasets: [{
+                label: 'Peso (kg)',
+                data: [],
+                borderColor: '#95d5b2',
+                tension: 0.1,
+                fill: false
+            }]
+        };
+
+        <?php
+        $measurements = getPetMeasurements($petId, 10); // Obtener las últimas 10 medidas para el gráfico
+        foreach (array_reverse($measurements) as $measurement) { // Invertir para que el tiempo vaya de izquierda a derecha
+            echo "weightData.labels.push('" . formatDateSpanish($measurement['fecha_medicion']) . "');\n";
+            echo "weightData.datasets[0].data.push(" . ($measurement['peso'] ?? 'null') . ");\n";
+        }
+        ?>
+
+        if (weightData.labels.length > 0) {
+            const ctxWeight = document.getElementById('weightChart').getContext('2d');
+            new Chart(ctxWeight, {
+                type: 'line',
+                data: weightData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Peso (kg)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Fecha'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Historial de Peso'
+                        }
+                    }
+                }
+            });
+        }
+    </script>
 
     <?php include_once __DIR__ . '/../includes/footer.php'; ?>

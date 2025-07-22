@@ -12,6 +12,10 @@ require_once '../includes/functions.php';
 $error = '';
 $success = '';
 
+// Variables para el header.php
+$isLoggedIn = false;
+$user = null;
+
 // Procesar formulario de login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
@@ -79,21 +83,7 @@ if (isset($_SESSION['verification_message'])) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="../../index.php" class="logo">
-                    <span class="logo-icon">🐾</span>
-                    <h1>PetDay</h1>
-                </a>
-                <nav class="main-nav">
-                    <div class="auth-buttons">
-                        <a href="register.php" class="btn btn-primary">Registrarse</a>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
+    <?php include_once __DIR__ . '/../includes/header.php'; ?>
 
     <main class="main-content">
         <section class="auth-form-section">

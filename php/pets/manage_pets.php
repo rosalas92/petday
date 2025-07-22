@@ -18,6 +18,9 @@ $userId = $_SESSION['user_id'];
 $user = getUserById($userId);
 $pets = getUserPets($userId);
 
+// Variables para el header.php
+$isLoggedIn = true;
+
 ?>
 
 <!DOCTYPE html>
@@ -33,31 +36,7 @@ $pets = getUserPets($userId);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header de Navegación -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="../../index.php" class="logo">
-                    <span class="logo-icon">🐾</span>
-                    <h1>PetDay</h1>
-                </a>
-                
-                <nav class="main-nav">
-                    <div class="user-menu">
-                        <span class="welcome-text">Hola, <?php echo htmlspecialchars($user['nombre_completo']); ?></span>
-                        <div class="user-dropdown">
-                            <button class="user-btn">👤</button>
-                            <div class="dropdown-content">
-                                <a href="manage_pets.php">Mis Mascotas</a>
-                                <a href="../reports/reports.php">Reportes</a>
-                                <a href="../auth/logout.php">Cerrar Sesión</a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
+    <?php include_once __DIR__ . '/../includes/header.php'; ?>
 
     <main class="main-content">
         <section class="manage-pets-page">

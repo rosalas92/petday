@@ -19,6 +19,9 @@ $user = getUserById($userId);
 $errors = [];
 $petData = [];
 
+// Variables para el header.php
+$isLoggedIn = true;
+
 // Procesar el formulario al recibir un POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitizar y recoger datos
@@ -75,21 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="../../index.php" class="logo">
-                    <span class="logo-icon">🐾</span>
-                    <h1>PetDay</h1>
-                </a>
-                <nav class="main-nav">
-                    <div class="user-menu">
-                        <span class="welcome-text">Hola, <?php echo htmlspecialchars($user['nombre_completo']); ?></span>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
+    <?php include_once __DIR__ . '/../includes/header.php'; ?>
 
     <main class="main-content">
         <section class="create-pet-form">

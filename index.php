@@ -38,38 +38,7 @@ if ($isLoggedIn) {
             <?php echo htmlspecialchars($_GET['message'] ?? (($_GET['contact_status'] == 'success') ? '¡Gracias! Tu mensaje ha sido enviado con éxito.' : 'Hubo un problema al enviar tu mensaje.')); ?>
         </div>
     <?php endif; ?>
-    <!-- Header de Navegación -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <span class="logo-icon">🐾</span>
-                    <h1>PetDay</h1>
-                </div>
-                
-                <nav class="main-nav">
-                    <?php if ($isLoggedIn): ?>
-                        <div class="user-menu">
-                            <span class="welcome-text">Hola, <?php echo htmlspecialchars($user['nombre_completo']); ?></span>
-                            <div class="user-dropdown">
-                                <button class="user-btn">👤</button>
-                                <div class="dropdown-content">
-                                    <a href="php/pets/manage_pets.php">Mis Mascotas</a>
-                                    <a href="php/reports/reports.php">Reportes</a>
-                                    <a href="php/auth/logout.php">Cerrar Sesión</a>
-                                </div>
-                            </div>
-                        </div>
-                    <?php else: ?>
-                        <div class="auth-buttons">
-                            <a href="php/auth/login.php" class="btn btn-outline">Iniciar Sesión</a>
-                            <a href="php/auth/register.php" class="btn btn-primary">Registrarse</a>
-                        </div>
-                    <?php endif; ?>
-                </nav>
-            </div>
-        </div>
-    </header>
+    <?php include_once 'php/includes/header.php'; ?>
 
     <main class="main-content">
         <?php if (!$isLoggedIn): ?>

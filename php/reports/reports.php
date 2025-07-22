@@ -15,6 +15,10 @@ if (!isset($_SESSION['user_id'])) {
 
 $userId = $_SESSION['user_id'];
 $user = getUserById($userId);
+
+// Variables para el header.php
+$isLoggedIn = true;
+
 $pets = getUserPets($userId);
 
 $overallStats = [
@@ -50,29 +54,7 @@ foreach ($pets as $pet) {
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <a href="../../index.php" class="logo">
-                    <span class="logo-icon">🐾</span>
-                    <h1>PetDay</h1>
-                </a>
-                <nav class="main-nav">
-                    <div class="user-menu">
-                        <span class="welcome-text">Hola, <?php echo htmlspecialchars($user['nombre_completo']); ?></span>
-                        <div class="user-dropdown">
-                            <button class="user-btn">👤</button>
-                            <div class="dropdown-content">
-                                <a href="../pets/manage_pets.php">Mis Mascotas</a>
-                                <a href="reports.php">Reportes</a>
-                                <a href="../auth/logout.php">Cerrar Sesión</a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
+    <?php include_once __DIR__ . '/../includes/header.php'; ?>
 
     <main class="main-content">
         <section class="reports-page">

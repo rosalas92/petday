@@ -14,9 +14,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $userId = $_SESSION['user_id'];
+$user = getUserById($userId);
 $userPets = getUserPets($userId);
 $errors = [];
 $eventData = [];
+
+// Variables para el header.php
+$isLoggedIn = true;
 
 $selectedPetId = filter_input(INPUT_GET, 'pet_id', FILTER_VALIDATE_INT);
 if ($selectedPetId) {
@@ -64,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
-    <!-- ... (header) ... -->
+    <?php include_once __DIR__ . '/../includes/header.php'; ?>
     <main class="main-content">
         <section class="create-event-form">
             <div class="container">
