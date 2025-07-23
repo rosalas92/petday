@@ -1898,19 +1898,21 @@ body {
     width: 100%;
     overflow-y: auto;
     max-height: 80px; /* Limita la altura de los eventos en el día */
+    flex-wrap: wrap; /* Allow items to wrap within the day-events container */
+    align-items: flex-start; /* Align items to the start */
 }
 
 .event-item {
     display: flex;
     align-items: center;
-    flex-direction: column;
-    /* gap: 5px; */
+    flex-direction: row;
+    gap: 5px;
     font-size: var(--font-size-xs);
-    /* padding: 3px 5px; */
+    padding: 3px 5px;
     border-radius: var(--radius-sm);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    flex-wrap: wrap; /* Allow items to wrap within the event-item */
+    justify-content: center; /* Center content horizontally */
+    text-align: center; /* Center text within the item */
 }
 
 .routine-event {
@@ -1933,6 +1935,8 @@ body {
 
 .event-title {
     flex-grow: 1;
+    white-space: normal; /* Allow text to wrap */
+    word-break: break-word; /* Break long words */
 }
 
 .calendar-day-header .day-abbr {
@@ -1951,37 +1955,50 @@ body {
 
     .calendar-grid {
         grid-template-columns: repeat(7, minmax(40px, 1fr)); /* Mantener 7 columnas, con un mínimo de 40px */
-        overflow-x: auto; /* Permitir desplazamiento horizontal */
     }
 
     .calendar-day {
-        min-height: 100px; /* Ajustar altura mínima para que quepa más contenido */
+        min-height: 150px; /* Ajustar altura mínima para que quepa más contenido */
         padding: var(--spacing-xs); /* Reducir padding */
     }
 
-    .day-number {
-        font-size: var(--font-size-sm);
-    }
-
     .day-events {
-        max-height: 70px; /* Ajustar altura máxima para eventos */
+        max-height: none; /* Eliminar límite de altura para permitir que todo el contenido se muestre */
         font-size: var(--font-size-xs);
+        flex-direction: column; /* Ensure column direction for day-events */
+        flex-wrap: nowrap; /* Prevent wrapping of event-items within day-events */
+        align-items: center; /* Center event items within the day */
     }
 
     .event-item {
         font-size: var(--font-size-xxs); /* Fuente aún más pequeña para eventos */
+        display: block; /* Force each event item to take its own line */
+        padding: 2px 3px;
+        width: 100%; /* Take full width */
+        margin-bottom: 5px; /* Add more vertical spacing */
+        text-align: center; /* Center text within the item */
     }
 
     .event-icon {
         font-size: var(--font-size-sm); /* Reducir tamaño del icono en responsive */
+        display: block; /* Ensure icon takes its own line within the block */
+        margin-bottom: 2px; /* Space between icon and text */
     }
 
-    .calendar-day-header .day-full {
-        display: none;
+    .event-time,
+    .event-title {
+        display: block; /* Ensure time and title take their own lines */
     }
 
-    .calendar-day-header .day-abbr {
-        display: inline;
+    .event-icon {
+        font-size: var(--font-size-sm); /* Reducir tamaño del icono en responsive */
+        display: block; /* Ensure icon takes its own line within the block */
+        margin-bottom: 2px; /* Space between icon and text */
+    }
+
+    .event-time,
+    .event-title {
+        display: block; /* Ensure time and title take their own lines */
     }
 }
 
