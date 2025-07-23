@@ -1924,7 +1924,7 @@ body {
 }
 
 .event-icon {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-lg); /* Aumentar tamaño del icono */
 }
 
 .event-time {
@@ -1933,6 +1933,10 @@ body {
 
 .event-title {
     flex-grow: 1;
+}
+
+.calendar-day-header .day-abbr {
+    display: none;
 }
 
 @media (max-width: 768px) {
@@ -1946,12 +1950,12 @@ body {
     }
 
     .calendar-grid {
-        grid-template-columns: repeat(7, 1fr); /* Mantener 7 columnas */
-        /* Eliminar overflow-x: auto si se había añadido */
+        grid-template-columns: repeat(7, minmax(40px, 1fr)); /* Mantener 7 columnas, con un mínimo de 40px */
+        overflow-x: auto; /* Permitir desplazamiento horizontal */
     }
 
     .calendar-day {
-        min-height: 80px; /* Ajustar altura mínima para que quepa más contenido */
+        min-height: 100px; /* Ajustar altura mínima para que quepa más contenido */
         padding: var(--spacing-xs); /* Reducir padding */
     }
 
@@ -1960,18 +1964,30 @@ body {
     }
 
     .day-events {
-        max-height: 50px; /* Ajustar altura máxima para eventos */
+        max-height: 70px; /* Ajustar altura máxima para eventos */
         font-size: var(--font-size-xs);
     }
 
     .event-item {
         font-size: var(--font-size-xxs); /* Fuente aún más pequeña para eventos */
     }
+
+    .event-icon {
+        font-size: var(--font-size-sm); /* Reducir tamaño del icono en responsive */
+    }
+
+    .calendar-day-header .day-full {
+        display: none;
+    }
+
+    .calendar-day-header .day-abbr {
+        display: inline;
+    }
 }
 
 @media (max-width: 480px) {
     .calendar-day {
-        min-height: 60px; /* Altura mínima para pantallas muy pequeñas */
+        min-height: 120px; /* Altura mínima para pantallas muy pequeñas */
     }
 
     .day-number {
@@ -1979,7 +1995,7 @@ body {
     }
 
     .day-events {
-        max-height: 40px; /* Altura máxima para eventos en pantallas muy pequeñas */
+        max-height: 50px; /* Altura máxima para eventos en pantallas muy pequeñas */
     }
 }
 

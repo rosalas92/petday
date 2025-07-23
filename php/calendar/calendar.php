@@ -145,13 +145,13 @@ $monthNames = [
                 </div>
 
                 <div class="calendar-grid">
-                    <div class="calendar-day-header">Lunes</div>
-                    <div class="calendar-day-header">Martes</div>
-                    <div class="calendar-day-header">Miércoles</div>
-                    <div class="calendar-day-header">Jueves</div>
-                    <div class="calendar-day-header">Viernes</div>
-                    <div class="calendar-day-header">Sábado</div>
-                    <div class="calendar-day-header">Domingo</div>
+                    <div class="calendar-day-header"><span class="day-full">Lunes</span><span class="day-abbr">L</span></div>
+                    <div class="calendar-day-header"><span class="day-full">Martes</span><span class="day-abbr">M</span></div>
+                    <div class="calendar-day-header"><span class="day-full">Miércoles</span><span class="day-abbr">X</span></div>
+                    <div class="calendar-day-header"><span class="day-full">Jueves</span><span class="day-abbr">J</span></div>
+                    <div class="calendar-day-header"><span class="day-full">Viernes</span><span class="day-abbr">V</span></div>
+                    <div class="calendar-day-header"><span class="day-full">Sábado</span><span class="day-abbr">S</span></div>
+                    <div class="calendar-day-header"><span class="day-full">Domingo</span><span class="day-abbr">D</span></div>
 
                     <?php foreach ($calendar as $dayData): ?>
                         <?php if ($dayData === null): ?>
