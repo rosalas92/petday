@@ -191,8 +191,9 @@ if ($isLoggedIn) {
                                                     <?php 
                                                     $isCompleted = isRoutineCompletedToday($routine['id_rutina']);
                                                     $isPending = strtotime($routine['hora_programada']) > time() && !$isCompleted;
+                                                    $routineColorClass = 'routine-bg-' . (($routine['id_rutina'] % 5) + 1); // Assign a color based on routine ID
                                                     ?>
-                                                    <div class="routine-item <?php echo $isCompleted ? 'completed' : ($isPending ? 'pending' : 'overdue'); ?>" data-routine-id="<?php echo $routine['id_rutina']; ?>">
+                                                    <div class="routine-item <?php echo $isCompleted ? 'completed' : ($isPending ? 'pending' : 'overdue'); ?> <?php echo $routineColorClass; ?>" data-routine-id="<?php echo $routine['id_rutina']; ?>">
                                                         <div class="routine-info">
                                                             <span class="routine-icon"><?php echo getActivityIcon($routine['tipo_actividad']); ?></span>
                                                             <div class="routine-details">

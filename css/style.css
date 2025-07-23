@@ -635,18 +635,22 @@ body {
     transition: background-color 0.2s ease;
 }
 
+/* New routine background colors */
+.routine-bg-1 { background-color: #e6f7f0; } /* Light primary */
+.routine-bg-2 { background-color: #fff5e6; } /* Light secondary */
+.routine-bg-3 { background-color: #e0f2f7; } /* Light blue */
+.routine-bg-4 { background-color: #f0e6f7; } /* Light purple */
+.routine-bg-5 { background-color: #f0f0f0; } /* Very light gray */
+
 .routine-item.completed {
-    background: #d4edda;
     border-left: 4px solid var(--success);
 }
 
 .routine-item.pending {
-    background: #fff3cd;
     border-left: 4px solid var(--warning);
 }
 
 .routine-item.overdue {
-    background: #f8d7da;
     border-left: 4px solid var(--danger);
 }
 
