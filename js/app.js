@@ -22,6 +22,9 @@ function initializeApp() {
     // Configurar la funcionalidad de marcar rutina como completada
     setupMarkRoutineComplete();
 
+    // Configurar el menú desplegable del usuario
+    initializeUserDropdown();
+
     console.log('✅ PetDay iniciado correctamente');
 }
 
@@ -107,3 +110,25 @@ function setupMarkRoutineComplete() {
     });
 }
 
+/**
+ * Configura el menú desplegable del usuario.
+ */
+function initializeUserDropdown() {
+    const userDropdown = document.querySelector('.user-dropdown');
+    const userBtn = userDropdown ? userDropdown.querySelector('.user-btn') : null;
+    const dropdownContent = userDropdown ? userDropdown.querySelector('.dropdown-content') : null;
+
+    if (userBtn && dropdownContent) {
+        userBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita que el clic se propague al documento
+            userDropdown.classList.toggle('open');
+        });
+
+        // Cerrar el dropdown si se hace clic fuera de él
+        document.addEventListener('click', (e) => {
+            if (userDropdown.classList.contains('open') && !userDropdown.contains(e.target)) {
+                userDropdown.classList.remove('open');
+            }
+        });
+    }
+}

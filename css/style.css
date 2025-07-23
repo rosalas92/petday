@@ -116,6 +116,8 @@ body {
     display: flex;
     align-items: center;
     gap: var(--spacing-md);
+    transform: scale(1.2);
+    transform-origin: right center;
 }
 
 .auth-buttons {
@@ -168,12 +170,15 @@ body {
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
+    height: 0; /* Added for collapse effect */
+    overflow: hidden; /* Added to hide content when height is 0 */
 }
 
 .user-dropdown:hover .dropdown-content {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    height: auto; /* Added for collapse effect */
 }
 
 .dropdown-content a {
@@ -317,16 +322,24 @@ body {
         box-shadow: none;
         border-radius: 0;
         padding: 0;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
+        opacity: 0; /* Ocultar por defecto en móvil */
+        visibility: hidden; /* Ocultar por defecto en móvil */
+        height: 0; /* Added for collapse effect */
+        overflow: hidden; /* Added to hide content when height is 0 */
+        /* transform: none; */ /* Eliminado, ya no es necesario si está oculto */
         border-top: 1px solid var(--gray-medium);
-        margin-top: var(--spacing-sm);
+        /* margin-top: var(--spacing-sm); */ /* Eliminado, ya no es necesario si está oculto */
     }
 
     .dropdown-content a {
         padding: var(--spacing-sm) 0;
         text-align: center;
+    }
+
+    .user-dropdown.open .dropdown-content {
+        opacity: 1;
+        visibility: visible;
+        height: auto; /* Added for collapse effect */
     }
 
     .hero-content {

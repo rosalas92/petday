@@ -15,7 +15,7 @@
                 <img src="<?php echo URL_ADMIN; ?>/images/logotipo-lateral.png" alt="PetDay Logo" style="height: 90px;">
             </a>
             
-            <nav class="main-nav" style="transform: scale(1.2); transform-origin: right center;">
+            <nav class="main-nav">
                 <?php if ($isLoggedIn): ?>
                     <div class="user-menu">
                         <span class="welcome-text">Hola, <?php echo htmlspecialchars($user['nombre_completo']); ?></span>
