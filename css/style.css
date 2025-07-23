@@ -284,6 +284,62 @@ body {
     align-items: center;
 }
 
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+
+    .main-nav {
+        flex-direction: column;
+        width: 100%;
+        gap: var(--spacing-sm);
+        transform: none !important; /* Remove the scale transform */
+    }
+
+    .auth-buttons,
+    .user-menu {
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    .user-dropdown {
+        width: 100%;
+        text-align: center;
+    }
+
+    .dropdown-content {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        border-top: 1px solid var(--gray-medium);
+        margin-top: var(--spacing-sm);
+    }
+
+    .dropdown-content a {
+        padding: var(--spacing-sm) 0;
+        text-align: center;
+    }
+
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+}
+
+
 .hero-text h2 {
     font-size: var(--font-size-3xl);
     font-weight: 700;
@@ -468,6 +524,7 @@ body {
 /* Tarjetas de mascotas */
 .pets-dashboard {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-xl);
 }
 
@@ -1668,6 +1725,26 @@ body {
     border-bottom: none;
 }
 
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+
+    .profile-actions {
+        margin-left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .profile-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 /* Reports Page */
 .reports-page {
     padding: var(--spacing-xl) 0;
@@ -1725,6 +1802,25 @@ body {
 
 .vet-contact-card .card-body p:last-child {
     margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .features-grid,
+    .pets-dashboard,
+    .pets-grid,
+    .stats-grid,
+    .testimonials-grid,
+    .footer-content,
+    .vet-contacts-list {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header,
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
 }
 
 /* Calendar Page */
@@ -1837,6 +1933,54 @@ body {
 
 .event-title {
     flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+    .calendar-nav {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .calendar-nav h3 {
+        font-size: var(--font-size-xl);
+    }
+
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr); /* Mantener 7 columnas */
+        /* Eliminar overflow-x: auto si se había añadido */
+    }
+
+    .calendar-day {
+        min-height: 80px; /* Ajustar altura mínima para que quepa más contenido */
+        padding: var(--spacing-xs); /* Reducir padding */
+    }
+
+    .day-number {
+        font-size: var(--font-size-sm);
+    }
+
+    .day-events {
+        max-height: 50px; /* Ajustar altura máxima para eventos */
+        font-size: var(--font-size-xs);
+    }
+
+    .event-item {
+        font-size: var(--font-size-xxs); /* Fuente aún más pequeña para eventos */
+    }
+}
+
+@media (max-width: 480px) {
+    .calendar-day {
+        min-height: 60px; /* Altura mínima para pantallas muy pequeñas */
+    }
+
+    .day-number {
+        font-size: var(--font-size-xs);
+    }
+
+    .day-events {
+        max-height: 40px; /* Altura máxima para eventos en pantallas muy pequeñas */
+    }
 }
 
 /* Contact Section */

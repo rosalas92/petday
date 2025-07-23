@@ -12,7 +12,7 @@
     <div class="container">
         <div class="header-content">
             <a href="<?php echo URL_ADMIN; ?>/index.php" class="logo">
-                <img src="<?php echo URL_ADMIN; ?>/images/logotipo-lateral.png" alt="PetDay Logo" style="height: 100px;">
+                <img src="<?php echo URL_ADMIN; ?>/images/logotipo-lateral.png" alt="PetDay Logo" style="height: 90px;">
             </a>
             
             <nav class="main-nav" style="transform: scale(1.2); transform-origin: right center;">
