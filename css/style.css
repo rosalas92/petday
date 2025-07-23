@@ -1831,6 +1831,11 @@ body {
         text-align: center;
     }
 
+    .footer-section .logo {
+        margin-left: 35%;
+        width: fit-content;
+    }
+
     .dashboard-header,
     .page-header {
         flex-direction: column;
