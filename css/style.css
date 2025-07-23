@@ -311,12 +311,6 @@ body {
         text-align: center;
     }
 
-    .logo {
-        display: block; /* Make the logo a block element for margin auto centering */
-        margin: 0 auto; /* Center the block element */
-        width: fit-content; /* Allow the block to shrink to its content's width */
-    }
-
     .dropdown-content {
         position: static;
         width: 100%;
@@ -1820,7 +1814,6 @@ body {
     .vet-contacts-list {
         grid-template-columns: 1fr;
     }
-
     .footer-section {
         text-align: center;
     }
@@ -1912,8 +1905,9 @@ body {
     align-items: flex-start; /* Align items to the start */
 }
 
+
 .event-item {
-    display: flex;
+     display: flex;
     align-items: center;
     flex-direction: row;
     gap: 5px;
@@ -1936,7 +1930,7 @@ body {
 }
 
 .event-icon {
-    font-size: var(--font-size-lg); /* Aumentar tamaño del icono */
+     font-size: var(--font-size-lg); /* Aumentar tamaño del icono */
 }
 
 .event-time {
@@ -1965,11 +1959,16 @@ body {
 
     .calendar-grid {
         grid-template-columns: repeat(7, minmax(40px, 1fr)); /* Mantener 7 columnas, con un mínimo de 40px */
+        overflow-x: auto; /* Permitir desplazamiento horizontal */
     }
 
     .calendar-day {
         min-height: 150px; /* Ajustar altura mínima para que quepa más contenido */
         padding: var(--spacing-xs); /* Reducir padding */
+    }
+
+    .day-number {
+        font-size: var(--font-size-sm);
     }
 
     .day-events {
@@ -2009,6 +2008,14 @@ body {
     .event-time,
     .event-title {
         display: block; /* Ensure time and title take their own lines */
+    }
+
+    .calendar-day-header .day-full {
+        display: none;
+    }
+
+    .calendar-day-header .day-abbr {
+        display: inline;
     }
 }
 
@@ -2160,6 +2167,7 @@ body {
     grid-column: span 2;
   }
 }
+
 
 /* Pantallas grandes (≥ 900px): seguir ocupando 2 columnas */
 @media (min-width: 900px) {
