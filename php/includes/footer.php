@@ -32,6 +32,6 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="js/app.js"></script>
+    <script src="/petday/js/app.js"></script>
 </body>
 </html>
