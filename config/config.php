@@ -35,3 +35,4 @@ if ($host === 'localhost' ||
     define('DB_NAME', 'dbs14433235');//base de datos
     define('URL_ADMIN','http://www.alumnaro.com/admin');
 }
+define('DB_CHARSET', 'utf8mb4');

@@ -1623,7 +1623,7 @@ body {
 
 .profile-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(425px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(390px, 1fr));
     gap: var(--spacing-xl);
 }
 
@@ -1960,6 +1960,24 @@ body {
     background: var(--primary-light);
 }
 
-.full-width-card {
-    grid-column: 1 / -1;
+/* Default: segundo y cuarto elementos normales en móviles */
+.profile-content > :nth-child(2),
+.profile-content > :nth-child(4) {
+  grid-column: span 1;
+}
+
+/* Pantallas medianas (≥ 600px): ocupar 2 columnas */
+@media (min-width: 600px) {
+  .profile-content > :nth-child(2),
+  .profile-content > :nth-child(4) {
+    grid-column: span 2;
+  }
+}
+
+/* Pantallas grandes (≥ 900px): seguir ocupando 2 columnas */
+@media (min-width: 900px) {
+  .profile-content > :nth-child(2),
+  .profile-content > :nth-child(4) {
+    grid-column: span 2;
+  }
 }
