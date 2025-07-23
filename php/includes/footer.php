@@ -4,7 +4,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="logo">
-                        <span class="logo-icon">🐾</span>
+                        <img src="<?php echo URL_ADMIN; ?>/images/logotipo.png" alt="PetDay Logo" class="logo-icon" style="width: 100px; height: auto;">
                         <span>PetDay</span>
                     </div>
                     <p>La mejor aplicación para gestionar la rutina de tus mascotas.</p>
