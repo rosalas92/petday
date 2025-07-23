@@ -311,6 +311,12 @@ body {
         text-align: center;
     }
 
+    .logo {
+        display: block; /* Make the logo a block element for margin auto centering */
+        margin: 0 auto; /* Center the block element */
+        width: fit-content; /* Allow the block to shrink to its content's width */
+    }
+
     .dropdown-content {
         position: static;
         width: 100%;
@@ -1813,6 +1819,10 @@ body {
     .footer-content,
     .vet-contacts-list {
         grid-template-columns: 1fr;
+    }
+
+    .footer-section {
+        text-align: center;
     }
 
     .dashboard-header,
