@@ -1554,6 +1554,14 @@ body {
     background: var(--danger);
 }
 
+/* Asegurar que el canvas de la gráfica sea visible */
+#weightChart {
+    display: block; /* Asegura que el canvas se comporte como un bloque */
+    width: 100% !important; /* Asegura que ocupe el ancho disponible */
+    height: 300px !important; /* Establece una altura mínima */
+    max-height: 400px; /* Limita la altura máxima */
+}
+
 /* Testimonials Section */
 .testimonials {
     padding: var(--spacing-xxl) 0;

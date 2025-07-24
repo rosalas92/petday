@@ -453,6 +453,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                                 <th>Longitud (cm)</th>
                                                 <th>Cuello (cm)</th>
                                                 <th>Notas</th>
+                                                <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -461,9 +462,13 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                                     <td><?php echo formatDateSpanish($measurement['fecha_medicion']); ?></td>
                                                     <td><?php echo htmlspecialchars($measurement['peso'] ?? '-'); ?></td>
                                                     <td><?php echo htmlspecialchars($measurement['altura'] ?? '-'); ?></td>
-                                                    <td><?php htmlspecialchars($measurement['longitud'] ?? '-'); ?></td>
-                                                    <td><?php htmlspecialchars($measurement['circunferencia_cuello'] ?? '-'); ?></td>
-                                                    <td><?php htmlspecialchars($measurement['notas'] ?? '-'); ?></td>
+                                                    <td><?php echo htmlspecialchars($measurement['longitud'] ?? '-'); ?></td>
+                                                    <td><?php echo htmlspecialchars($measurement['circunferencia_cuello'] ?? '-'); ?></td>
+                                                    <td><?php echo htmlspecialchars($measurement['notas'] ?? '-'); ?></td>
+                                                    <td>
+                                                        <a href="edit_measurement.php?id=<?php echo $measurement['id_medida']; ?>" class="btn btn-xs btn-outline">Editar</a>
+                                                        <a href="delete_measurement.php?id=<?php echo $measurement['id_medida']; ?>" class="btn btn-xs btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta medida? Esta acción no se puede deshacer.');">Eliminar</a>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -477,8 +482,8 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
         </section>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../js/app.js?v=1.6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script src="../../js/app.js?v=1.7"></script>
 
     <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 
