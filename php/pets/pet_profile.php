@@ -37,7 +37,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de <?php echo htmlspecialchars($pet['nombre']); ?> - PetDay</title>
-    <link rel="stylesheet" href="../../css/style.css?v=1.9">
+    <link rel="stylesheet" href="../../css/style.css?v=1.10">
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
