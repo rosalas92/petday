@@ -37,7 +37,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de <?php echo htmlspecialchars($pet['nombre']); ?> - PetDay</title>
-    <link rel="stylesheet" href="../../css/style.css?v=1.3">
+    <link rel="stylesheet" href="../../css/style.css?v=1.9">
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
@@ -85,7 +85,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                             <?php else: ?>
                                 <div class="routines-list-profile">
                                     <?php foreach ($routines as $routine): ?>
-                                        <div class="routine-item-profile">
+                                        <div class="routine-item-profile clickable-event" data-event='<?php echo json_encode($routine); ?>'>
                                             <span class="routine-icon"><?php echo getActivityIcon($routine['tipo_actividad']); ?></span>
                                             <div class="routine-item-details">
                                                 <strong><?php echo htmlspecialchars($routine['nombre_actividad']); ?></strong>
@@ -93,6 +93,8 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                                 <small class="text-muted"><?php echo str_replace(',', ', ', $routine['dias_semana']); ?></small>
                                             </div>
                                             <div class="routine-item-actions">
+                                                <!-- Placeholder para icono de estado -->
+                                                <span class="routine-status-icon" data-routine-id="<?php echo $routine['id_rutina']; ?>"></span>
                                                 <a href="../routines/edit_routine.php?id=<?php echo $routine['id_rutina']; ?>" class="btn btn-xs btn-outline">Editar</a>
                                                 <a href="../routines/delete_routine.php?id=<?php echo $routine['id_rutina']; ?>" class="btn btn-xs btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta rutina? Esta acción no se puede deshacer.');">Eliminar</a>
                                             </div>
@@ -168,16 +170,6 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                 echo '<a href="' . generateCalendarNavUrl($petId, $prevWeek->format('n'), $prevWeek->format('Y'), $currentView, $prevWeek->format('j')) . '" class="btn btn-sm btn-outline">&lt; Semana Anterior</a>';
                                 echo '<h3>Semana del ' . $date->format('d M Y') . '</h3>';
                                 echo '<a href="' . generateCalendarNavUrl($petId, $nextWeek->format('n'), $nextWeek->format('Y'), $currentView, $nextWeek->format('j')) . '" class="btn btn-sm btn-outline">Semana Siguiente &gt;</a>';
-                            } elseif ($currentView === 'day') {
-                                $date = new DateTime("$currentYear-$currentMonth-$currentDay");
-                                $prevDay = clone $date;
-                                $prevDay->modify('-1 day');
-                                $nextDay = clone $date;
-                                $nextDay->modify('+1 day');
-
-                                echo '<a href="' . generateCalendarNavUrl($petId, $prevDay->format('n'), $prevDay->format('Y'), $currentView, $prevDay->format('j')) . '" class="btn btn-sm btn-outline">&lt; Día Anterior</a>';
-                                echo '<h3>' . $date->format('d M Y') . '</h3>';
-                                echo '<a href="' . generateCalendarNavUrl($petId, $nextDay->format('n'), $nextDay->format('Y'), $currentView, $nextDay->format('j')) . '" class="btn btn-sm btn-outline">Día Siguiente &gt;</a>';
                             }
                             echo '</div>';
 
@@ -256,14 +248,14 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                                 <span class="day-number"><?php echo $dayData['day']; ?></span>
                                                 <div class="day-events">
                                                     <?php foreach ($dayData['routines'] as $routine): ?>
-                                                        <div class="event-item routine-event">
+                                                        <div class="event-item routine-event clickable-event" data-event='<?php echo json_encode($routine); ?>'>
                                                             <span class="event-icon"><?php echo getActivityIcon($routine['tipo_actividad']); ?></span>
                                                             <span class="event-time"><?php echo date('H:i', strtotime($routine['hora_programada'])); ?></span>
                                                             <span class="event-title"><?php echo htmlspecialchars($routine['nombre_actividad']); ?></span>
                                                         </div>
                                                     <?php endforeach; ?>
                                                     <?php foreach ($dayData['events'] as $event): ?>
-                                                        <div class="event-item calendar-event">
+                                                        <div class="event-item calendar-event clickable-event" data-event='<?php echo json_encode($event); ?>'>
                                                             <span class="event-icon">🏥</span>
                                                             <span class="event-time"><?php echo date('H:i', strtotime($event['fecha_evento'])); ?></span>
                                                             <span class="event-title"><?php echo htmlspecialchars($event['titulo']); ?></span>
@@ -326,14 +318,14 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                             <span class="day-number"><?php echo $dayData['day_name']; ?></span>
                                             <div class="day-events">
                                                 <?php foreach ($dayData['routines'] as $routine): ?>
-                                                    <div class="event-item routine-event">
+                                                    <div class="event-item routine-event clickable-event" data-event='<?php echo json_encode($routine); ?>'>
                                                         <span class="event-icon"><?php echo getActivityIcon($routine['tipo_actividad']); ?></span>
                                                         <span class="event-time"><?php echo date('H:i', strtotime($routine['hora_programada'])); ?></span>
                                                         <span class="event-title"><?php echo htmlspecialchars($routine['nombre_actividad']); ?></span>
                                                     </div>
                                                 <?php endforeach; ?>
                                                 <?php foreach ($dayData['events'] as $event): ?>
-                                                    <div class="event-item calendar-event">
+                                                    <div class="event-item calendar-event clickable-event" data-event='<?php echo json_encode($event); ?>'>
                                                         <span class="event-icon">🏥</span>
                                                         <span class="event-time"><?php echo date('H:i', strtotime($event['fecha_evento'])); ?></span>
                                                         <span class="event-title"><?php echo htmlspecialchars($event['titulo']); ?></span>
@@ -385,14 +377,14 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                                 <p class="text-muted">No hay eventos ni rutinas para este día.</p>
                                             <?php else: ?>
                                                 <?php foreach ($dayData['routines'] as $routine): ?>
-                                                    <div class="event-item routine-event">
+                                                    <div class="event-item routine-event clickable-event" data-event='<?php echo json_encode($routine); ?>'>
                                                         <span class="event-icon"><?php echo getActivityIcon($routine['tipo_actividad']); ?></span>
                                                         <span class="event-time"><?php echo date('H:i', strtotime($routine['hora_programada'])); ?></span>
                                                         <span class="event-title"><?php echo htmlspecialchars($routine['nombre_actividad']); ?></span>
                                                     </div>
                                                 <?php endforeach; ?>
                                                 <?php foreach ($dayData['events'] as $event): ?>
-                                                    <div class="event-item calendar-event">
+                                                    <div class="event-item calendar-event clickable-event" data-event='<?php echo json_encode($event); ?>'>
                                                         <span class="event-icon">🏥</span>
                                                         <span class="event-time"><?php echo date('H:i', strtotime($event['fecha_evento'])); ?></span>
                                                         <span class="event-title"><?php echo htmlspecialchars($event['titulo']); ?></span>
@@ -429,7 +421,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                                     <a href="../../uploads/medical_records/<?php echo htmlspecialchars($record['archivo_adjunto']); ?>" target="_blank" class="btn btn-xs btn-outline">Ver Archivo</a>
                                                 <?php endif; ?>
                                                 <a href="../medical_records/edit_medical_record.php?id=<?php echo $record['id_historial']; ?>" class="btn btn-xs btn-primary">Editar</a>
-                                                <a href="../medical_records/delete_medical_record.php?id=<?php echo $record['id_historial']; ?>" class="btn btn-xs btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este registro médico? Esta acción no se puede deshacer.');">Eliminar</a>
+                                                <a href="../medical_records/delete_medical_record.php?id=<?php echo $record['id_historial']; ?>" class="btn btn-xs btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este registro médico? Esta acción no se puede deshacer.');');">Eliminar</a>
                                             </div>
                                         </div>
                                     <?php endforeach; ?>
@@ -486,59 +478,21 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Datos para el gráfico de peso (ya existente)
-        const weightData = {
-            labels: [],
-            datasets: [{
-                label: 'Peso (kg)',
-                data: [],
-                borderColor: '#95d5b2',
-                tension: 0.1,
-                fill: false
-            }]
-        };
-
-        <?php
-        $measurements = getPetMeasurements($petId, 10); // Obtener las últimas 10 medidas para el gráfico
-        foreach (array_reverse($measurements) as $measurement) { // Invertir para que el tiempo vaya de izquierda a derecha
-            echo "weightData.labels.push('" . formatDateSpanish($measurement['fecha_medicion']) . "');\n";
-            echo "weightData.datasets[0].data.push(" . ($measurement['peso'] ?? 'null') . ");\n";
-        }
-        ?>
-
-        if (weightData.labels.length > 0) {
-            const ctxWeight = document.getElementById('weightChart').getContext('2d');
-            new Chart(ctxWeight, {
-                type: 'line',
-                data: weightData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Peso (kg)'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Fecha'
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Historial de Peso'
-                        }
-                    }
-                }
-            });
-        }
-    </script>
+    <script src="../../js/app.js?v=1.5"></script>
 
     <?php include_once __DIR__ . '/../includes/footer.php'; ?>
+
+    <!-- Modal para detalles del día -->
+    <div id="dayDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalDayTitle"></h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modalEventsList">
+                <!-- Los eventos se cargarán aquí con JS -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1028,6 +1028,57 @@ body {
     color: var(--danger);
 }
 
+/* Estilos para los eventos dentro del modal */
+.modal-body .event-item {
+    margin-bottom: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.modal-body .event-item:last-child {
+    margin-bottom: 0;
+}
+
+.modal-body .event-icon {
+    font-size: var(--font-size-lg);
+}
+
+.modal-body .event-details {
+    flex-grow: 1;
+}
+
+.modal-body .event-time {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.modal-body .event-title {
+    color: var(--text-color);
+}
+
+.modal-body .event-description {
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+    margin-top: var(--spacing-xs);
+}
+
+.modal-body .no-events-msg {
+    text-align: center;
+    color: var(--text-light);
+    font-style: italic;
+    padding: var(--spacing-md);
+}
+
+/* Media query para ocultar el contenido de los días en vista de rejilla en móvil */
+@media (max-width: 768px) {
+    .calendar-day .day-events {
+        display: none; /* Oculta los eventos en la vista de rejilla en móvil */
+    }
+}
+
 /* Tablas */
 .table {
     width: 100%;
@@ -1761,7 +1812,6 @@ body {
     }
 }
 
-
 /* Reports Page */
 .reports-page {
     padding: var(--spacing-xl) 0;
@@ -1921,8 +1971,8 @@ body {
     flex-direction: column;
     gap: 5px;
     width: 100%;
-    overflow-y: auto;
-    max-height: 80px; /* Limita la altura de los eventos en el día */
+    overflow-y: visible;
+    max-height: none; /* Limita la altura de los eventos en el día */
     flex-wrap: wrap; /* Allow items to wrap within the day-events container */
     align-items: flex-start; /* Align items to the start */
 }

@@ -126,7 +126,7 @@ $monthNames = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario - PetDay</title>
-    <link rel="stylesheet" href="../../css/style.css?v=1.6">
+    <link rel="stylesheet" href="../../css/style.css?v=1.8">
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
@@ -157,7 +157,9 @@ $monthNames = [
                         <?php if ($dayData === null): ?>
                             <div class="calendar-day empty"></div>
                         <?php else: ?>
-                            <div class="calendar-day <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>">
+                            <div class="calendar-day <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>" 
+                                 data-date="<?php echo $dayData['date']; ?>"
+                                 data-events='<?php echo json_encode(array_merge($dayData['routines'], $dayData['events'])); ?>'>
                                 <span class="day-number"><?php echo $dayData['day']; ?></span>
                                 <div class="day-events">
                                     <?php foreach ($dayData['routines'] as $routine): ?>
@@ -179,8 +181,26 @@ $monthNames = [
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
+
+                
             </div>
         </section>
     </main>
 
     <?php include_once __DIR__ . '/../includes/footer.php'; ?>
+    <script src="../../js/app.js?v=1.5"></script>
+
+    <!-- Modal para detalles del día -->
+    <div id="dayDetailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalDayTitle"></h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modalEventsList">
+                <!-- Los eventos se cargarán aquí con JS -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

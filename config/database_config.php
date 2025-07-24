@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config.php';
 /**
  * PetDay - Configuración de Base de Datos
  * Archivo para conectar con MySQL/MariaDB
