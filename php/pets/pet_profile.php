@@ -244,7 +244,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                         <?php if ($dayData === null): ?>
                                             <div class="calendar-day empty"></div>
                                         <?php else: ?>
-                                            <div class="calendar-day <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>">
+                                            <div class="calendar-day <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>" data-date="<?php echo $dayData['date']; ?>" data-events='<?php echo json_encode(array_merge($dayData['routines'], $dayData['events'])); ?>'>
                                                 <span class="day-number"><?php echo $dayData['day']; ?></span>
                                                 <div class="day-events">
                                                     <?php foreach ($dayData['routines'] as $routine): ?>
@@ -314,7 +314,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                 ?>
                                 <div class="calendar-week-grid">
                                     <?php foreach ($weekDays as $dayData): ?>
-                                        <div class="calendar-day-week-view <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>">
+                                        <div class="calendar-day-week-view <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>" data-date="<?php echo $dayData['date']; ?>" data-events='<?php echo json_encode(array_merge($dayData['routines'], $dayData['events'])); ?>'>
                                             <span class="day-number"><?php echo $dayData['day_name']; ?></span>
                                             <div class="day-events">
                                                 <?php foreach ($dayData['routines'] as $routine): ?>
@@ -370,7 +370,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                 }
                                 ?>
                                 <div class="calendar-day-view">
-                                    <div class="calendar-day-single-view <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>">
+                                    <div class="calendar-day-single-view <?php echo (date('Y-m-d') == $dayData['date']) ? 'today' : ''; ?>" data-date="<?php echo $dayData['date']; ?>" data-events='<?php echo json_encode(array_merge($dayData['routines'], $dayData['events'])); ?>'>
                                         <span class="day-number">Eventos para <?php echo $dayData['day_name']; ?></span>
                                         <div class="day-events">
                                             <?php if (empty($dayData['routines']) && empty($dayData['events'])): ?>
@@ -478,7 +478,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../../js/app.js?v=1.5"></script>
+    <script src="../../js/app.js?v=1.6"></script>
 
     <?php include_once __DIR__ . '/../includes/footer.php'; ?>
 

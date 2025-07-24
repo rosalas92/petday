@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (this.classList.contains('calendar-day')) {
                     // Lógica para el calendario (ya existente)
                     const date = this.dataset.date;
+
                     events = JSON.parse(this.dataset.events);
                     const dateObj = new Date(date + 'T00:00:00');
                     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

@@ -1073,11 +1073,10 @@ body {
 }
 
 /* Media query para ocultar el contenido de los días en vista de rejilla en móvil */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .calendar-day .day-events {
-        display: none; /* Oculta los eventos en la vista de rejilla en móvil */
     }
-}
+} */
 
 /* Tablas */
 .table {
@@ -1943,6 +1942,7 @@ body {
     justify-content: flex-start;
     transition: background-color 0.2s ease;
     position: relative;
+    overflow: hidden;
 }
 
 .calendar-day:hover {
