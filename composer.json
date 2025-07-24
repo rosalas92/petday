@@ -4,7 +4,8 @@
     "description": "Aplicación para la gestión de mascotas.",
     "type": "project",
     "require": {
-        "phpmailer/phpmailer": "^6.5"
+        "phpmailer/phpmailer": "^6.5",
+        "dompdf/dompdf": "^2.0"
     },
     "authors": [
         {

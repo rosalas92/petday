@@ -420,6 +420,7 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
                                                 <?php if ($record['archivo_adjunto']): ?>
                                                     <a href="../../uploads/medical_records/<?php echo htmlspecialchars($record['archivo_adjunto']); ?>" target="_blank" class="btn btn-xs btn-outline">Ver Archivo</a>
                                                 <?php endif; ?>
+                                                <a href="../medical_records/download_pdf.php?id=<?php echo $record['id_historial']; ?>" class="btn btn-xs btn-info">Descargar PDF</a>
                                                 <a href="../medical_records/edit_medical_record.php?id=<?php echo $record['id_historial']; ?>" class="btn btn-xs btn-primary">Editar</a>
                                                 <a href="../medical_records/delete_medical_record.php?id=<?php echo $record['id_historial']; ?>" class="btn btn-xs btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este registro médico? Esta acción no se puede deshacer.');');">Eliminar</a>
                                             </div>
@@ -483,21 +484,9 @@ $events = getUpcomingEvents($petId, 365); // Próximos eventos del año
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script>
+        // Pasar los datos de las medidas a JavaScript para que charts.js los use
+        const petMeasurements = <?php echo json_encode($measurements); ?>;
+    </script>
     <script src="../../js/app.js?v=1.7"></script>
-
-    <?php include_once __DIR__ . '/../includes/footer.php'; ?>
-
-    <!-- Modal para detalles del día -->
-    <div id="dayDetailsModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modalDayTitle"></h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body" id="modalEventsList">
-                <!-- Los eventos se cargarán aquí con JS -->
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+    <script src="../../js/charts.js?v=1.1"></script>
