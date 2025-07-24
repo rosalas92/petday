@@ -126,7 +126,7 @@ $monthNames = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario - PetDay</title>
-    <link rel="stylesheet" href="../../css/style.css?v=1.10">
+    <link rel="stylesheet" href="../../css/style.css?v=1.12">
     <link rel="icon" href="../../images/favicon.png" type="image/png">
 </head>
 <body>
@@ -162,12 +162,17 @@ $monthNames = [
                                  data-events='<?php echo json_encode(array_merge($dayData['routines'], $dayData['events'])); ?>'>
                                 <span class="day-number"><?php echo $dayData['day']; ?></span>
                                 <div class="day-events">
+                                    <?php $colorIndex = 1; // Inicializar el índice de color ?>
                                     <?php foreach ($dayData['routines'] as $routine): ?>
-                                        <div class="event-item routine-event">
+                                        <div class="event-item routine-event routine-bg-<?php echo $colorIndex; ?>">
                                             <span class="event-icon"><?php echo getActivityIcon($routine['tipo_actividad']); ?></span>
                                             <span class="event-time"><?php echo date('H:i', strtotime($routine['hora_programada'])); ?></span>
                                             <span class="event-title"><?php echo htmlspecialchars($routine['nombre_actividad']); ?> (<?php echo htmlspecialchars($routine['pet_name']); ?>)</span>
                                         </div>
+                                        <?php 
+                                            $colorIndex++;
+                                            if ($colorIndex > 5) $colorIndex = 1; // Reiniciar el índice si excede 5
+                                        ?>
                                     <?php endforeach; ?>
                                     <?php foreach ($dayData['events'] as $event): ?>
                                         <div class="event-item calendar-event">

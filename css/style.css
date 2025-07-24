@@ -2009,12 +2009,12 @@ body {
 }
 
 .routine-event {
-    background: rgba(149, 213, 178, 0.2); /* primary-color con opacidad */
+    /* background: rgba(149, 213, 178, 0.2); /* primary-color con opacidad */
     color: var(--primary-dark);
 }
 
 .calendar-event {
-    background: rgba(255, 193, 7, 0.2); /* warning con opacidad */
+    /* background: rgba(255, 193, 7, 0.2); /* warning con opacidad */
     color: #e0a800;
 }
 
