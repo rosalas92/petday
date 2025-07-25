@@ -1,5 +1,3 @@
-
-
 <?php
 //credenciales para el envío de correos
 define('MAIL_HOST', 'smtp.ionos.es');
@@ -29,10 +27,10 @@ if ($host === 'localhost' ||
 } else {
     //echo 'Entorno de producción en la nube';
     // Configuración para producción
-    define('DB_HOST', 'db5018219591.hosting-data.io');
-    define('DB_USER', 'dbu1166503');//nombre de usuario
-    define('DB_PASS', '789erg7634d9frjwr');
-    define('DB_NAME', 'dbs14433235');//base de datos
-    define('URL_ADMIN','http://www.alumnaro.com/admin');
+    define('DB_HOST', 'db5018277465.hosting-data.io');
+    define('DB_USER', 'dbu3600379');//nombre de usuario
+    define('DB_PASS', '384549erTf345dfgh4590pjgDGDFG');//contraseña
+    define('DB_NAME', 'dbs14491668');//base de datos
+    define('URL_ADMIN','http://www.alumnaro.com');
 }
 define('DB_CHARSET', 'utf8mb4');
